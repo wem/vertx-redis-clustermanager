@@ -42,11 +42,17 @@ tasks {
     }
 
     withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "11"
+        kotlinOptions {
+            jvmTarget = Version.java
+            apiVersion = "1.4"
+            languageVersion = "1.4"
+            freeCompilerArgs = listOf("-Xinline-classes")
+        }
     }
 }
 
 object Version {
+    const val java = "11"
     const val vertx = "4.0.2"
     const val redisHeimdall = "1.0.0"
     const val kotlinLogging = "2.0.4"
