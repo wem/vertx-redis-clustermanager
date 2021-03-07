@@ -15,10 +15,12 @@ import kotlin.LazyThreadSafetyMode.NONE
 internal class RedisCounterTest : AbstractRedisTest() {
 
     private companion object {
-        val redisCounterKey = RedisCounterKey("redis-counter")
+        val clusterName = ClusterName("cluster")
+        val redisCounterName = RedisCounterName("redis-counter")
+        val redisCounterKey = clusterName.serviceKey(redisCounterName)
     }
 
-    private val sut by lazy(NONE) { RedisCounterImpl(redisCounterKey, redis, LuaExecutor(redis)) }
+    private val sut by lazy(NONE) { RedisCounterImpl(clusterName, redisCounterName, redis, LuaExecutor(redis)) }
 
     @Test
     internal fun get_no_existing_value(testContext: VertxTestContext) = testContext.async {
@@ -119,6 +121,6 @@ internal class RedisCounterTest : AbstractRedisTest() {
 
 
     private suspend fun setValueAndVerifyResponse(value: Long) {
-        redis.send(Request.cmd(Command.SET).arg("$redisCounterKey").arg(value)).await().isOk().shouldBeTrue()
+        redis.send(Request.cmd(Command.SET).arg(redisCounterKey).arg(value)).await().isOk().shouldBeTrue()
     }
 }
