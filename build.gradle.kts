@@ -21,6 +21,7 @@ dependencies {
     implementation(vertx("core"))
     implementation("ch.sourcemotion.vertx.redis:vertx-redis-client-heimdall:${Version.redisHeimdall}")
     implementation("io.github.microutils:kotlin-logging:${Version.kotlinLogging}")
+    implementation("de.ruedigermoeller:fst:${Version.fst}")
 
     // Test libs
     testImplementation(vertx("junit5"))
@@ -30,6 +31,7 @@ dependencies {
     testImplementation("org.apache.logging.log4j:log4j-slf4j-impl")
     testImplementation("org.apache.logging.log4j:log4j-core")
     testImplementation("io.kotest:kotest-assertions-core-jvm:${Version.Test.kotest}")
+    testImplementation("com.fasterxml.jackson.module:jackson-module-kotlin") { version { strictly(Version.jackson) } }
 
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
@@ -46,7 +48,7 @@ tasks {
             jvmTarget = Version.java
             apiVersion = "1.4"
             languageVersion = "1.4"
-            freeCompilerArgs = listOf("-Xinline-classes")
+            freeCompilerArgs += listOf("-Xinline-classes")
         }
     }
 }
@@ -54,8 +56,10 @@ tasks {
 object Version {
     const val java = "11"
     const val vertx = "4.0.2"
+    const val jackson = "2.11.3"
     const val redisHeimdall = "1.0.0"
     const val kotlinLogging = "2.0.4"
+    const val fst = "2.56"
 
     object Test {
         const val junit = "5.7.0"
